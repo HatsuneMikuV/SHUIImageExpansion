@@ -26,7 +26,6 @@
 - (void)getSwitchType:(SHImageBitmapType)type {
     
     switch (type) {
-        
         case SHImageBitmapTypeNone:
             
             break;
@@ -57,37 +56,114 @@
         case SHImageBitmapTypeSourceData:
             [self SHImageSourceData];
             break;
+        case SHImageBitmapTypeSourceSize:
+            [self SHImageSourceImageSize];
+            break;
             
         default:
             break;
     }
 }
 - (void)SHImageRadius {
+
+    UIImage *image = [UIImage imageNamed:@"1"];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 100, SCREENWIDTH - 100, (SCREENWIDTH - 100) * image.size.height / image.size.width)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeScaleAspectFill)];
     
+    [imageView setImage:[image imageWithCornerRadius:50.f]];
+    
+    [self.view addSubview:imageView];
 }
 - (void)SHImageSize {
-    
+    UIImage *image = [UIImage imageNamed:@"1"];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 100, SCREENWIDTH - 100, (SCREENWIDTH - 100) * image.size.height / image.size.width)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeCenter)];
+    [imageView setImage:[image thumbnailWithSize:CGSizeMake(150, 150)]];
+
+    [self.view addSubview:imageView];
 }
 - (void)SHImageColor {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 100, SCREENWIDTH - 100, SCREENWIDTH - 100)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeCenter)];
+    [imageView setImage:[UIImage imageWithColor:[UIColor purpleColor] size:CGSizeMake(150, 150)]];
     
+    [self.view addSubview:imageView];
 }
 - (void)SHImageScreenImage {
+    UIImage *image = [UIImage imageNamed:@"5"];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, SCREENWIDTH, SCREENWIDTH + 150)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeCenter)];
+    [imageView setImage:[image snapshotScreenBackgroundColor:[UIColor redColor]]];
     
+    [self.view addSubview:imageView];
 }
 - (void)SHImageWaterImage {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, SCREENWIDTH, SCREENWIDTH - 100)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeScaleToFill)];
+    [imageView setImage:[UIImage waterMakeImage:@"4" underImage:@"2"]];
     
+    [self.view addSubview:imageView];
 }
 - (void)SHImageStringImage {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, SCREENWIDTH, SCREENWIDTH - 100)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeCenter)];
+    [imageView setImage:[UIImage getImageWithString:@"测试图片啊，不信你试试\n测试图片啊，不信你试试\n测试图片啊，不信你试试"
+                                               font:[UIFont boldSystemFontOfSize:15]
+                                          textColor:[UIColor blackColor]
+                                    backgroundColor:[UIColor lightGrayColor] size:CGSizeMake(SCREENWIDTH - 100, 100)]];
     
+    [self.view addSubview:imageView];
 }
 - (void)SHImageAttributedStringImage {
     
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, SCREENWIDTH, SCREENWIDTH - 100)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeCenter)];
+    
+    NSMutableAttributedString *att = [[NSMutableAttributedString alloc] initWithString:@"测试富文本图片，不信你试试啊\n不信你试试啊"];
+    [att addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15],
+                         NSForegroundColorAttributeName:[UIColor redColor]} range:NSMakeRange(0, att.length)];
+    NSMutableAttributedString *att1 = [[NSMutableAttributedString alloc] initWithString:@"\n测试富文本图片，不信你试\n测试富文本图片，不信你试"];
+    [att1 addAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:11],
+                         NSForegroundColorAttributeName:[UIColor yellowColor]} range:NSMakeRange(0, att1.length)];
+    [att appendAttributedString:att1];
+    
+    [imageView setImage:[UIImage getImageWithAttributedString:att backgroundColor:[UIColor lightGrayColor] size:CGSizeMake(SCREENWIDTH - 100, 100)]];
+    
+    [self.view addSubview:imageView];
 }
 - (void)SHImageSourceName {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, SCREENWIDTH, SCREENWIDTH + 150)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeScaleAspectFit)];
+    [imageView setImage:[UIImage animatedGIFNamed:@"3"]];
     
+    [self.view addSubview:imageView];
 }
 - (void)SHImageSourceData {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, SCREENWIDTH, SCREENWIDTH + 150)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeScaleAspectFit)];
     
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"3" ofType:@"gif"];
+    NSData *data = [NSData dataWithContentsOfFile:path];
+    [imageView setImage:[UIImage animatedGIFWithData:data]];
+    
+    [self.view addSubview:imageView];
+}
+- (void)SHImageSourceImageSize {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 100, SCREENWIDTH, SCREENWIDTH + 150)];
+    imageView.backgroundColor = [UIColor cyanColor];
+    [imageView setContentMode:(UIViewContentModeCenter)];
+    [imageView setImage:[[UIImage animatedGIFNamed:@"3"] animatedImageByScalingAndCroppingToSize:CGSizeMake(200, 60)]];
+    
+    [self.view addSubview:imageView];
 }
 
 

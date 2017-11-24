@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
+#import "UIImage+SHExtensions.h"
 
 typedef enum : NSUInteger {
     SHImageBitmapTypeNone = 0,
@@ -20,6 +21,7 @@ typedef enum : NSUInteger {
     SHImageBitmapTypeAttributedStringImage,
     SHImageBitmapTypeSourceName,
     SHImageBitmapTypeSourceData,
+    SHImageBitmapTypeSourceSize,
 } SHImageBitmapType;
 
 @interface SHImageViewController : UIViewController

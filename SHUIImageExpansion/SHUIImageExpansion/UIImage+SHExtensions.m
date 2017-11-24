@@ -58,13 +58,12 @@
      第二个参数是alpha通道，yes是不透明，no是透明，选择no生成的图片会比较清晰
      第三个参数是生成图片与原始图片的比例，这里如果传入0.0的话，表示默认是系统的比例
      */
-    UIGraphicsBeginImageContextWithOptions(underImage.size, NO, 0.0);
+    UIGraphicsBeginImageContextWithOptions(underImage.size, NO, 1.0);
     
     //绘制主图
-    UIScreen* screen = [UIScreen mainScreen];
-    float underImageW = underImage.size.width > screen.bounds.size.width ? screen.bounds.size.width:underImage.size.width;
-    float underImageH = underImageW/underImage.size.width*underImage.size.height;
-    [underImage drawInRect:CGRectMake(0, 20, underImageW, underImageH)];
+    float underImageW = underImage.size.width;
+    float underImageH = underImage.size.height;
+    [underImage drawInRect:CGRectMake(0, 0, underImageW, underImageH)];
     
     //根据传进来的数据创建图片-水印
     UIImage* waterMakeImage = [UIImage imageNamed:imageName];
@@ -84,36 +83,37 @@
     
     return bitmapImage;
 }
-- (UIImage *)snapshotScreenInView:(UIImage *)oldImage
-                  backgroundColor:(UIColor *)color {
+- (UIImage *)snapshotScreenBackgroundColor:(UIColor *)color {
     
-    CGSize size = CGSizeMake(SCREENWIDTH, oldImage.size.height);
+    if (self.size.width >= SCREENWIDTH) {
+        return self;
+    }
+    CGSize size = CGSizeMake(SCREENWIDTH, self.size.height);
     UIView *backView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, size.height)];
     
     backView.backgroundColor = color ? color:[UIColor whiteColor];
     
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:oldImage];
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:self];
     
-    CGFloat imageX = (SCREENWIDTH - oldImage.size.width) * 0.5;
+    CGFloat imageX = (SCREENWIDTH - self.size.width) * 0.5;
     
-    imageView.frame = CGRectMake(imageX, 0, oldImage.size.width, oldImage.size.height);
+    imageView.frame = CGRectMake(imageX, 0, self.size.width, self.size.height);
     
     [backView addSubview:imageView];
     
-    UIGraphicsBeginImageContextWithOptions(size, NO, [UIScreen mainScreen].scale);
-    CGRect rect = backView.frame;
-    [backView drawViewHierarchyInRect:rect afterScreenUpdates:YES];
+    UIGraphicsBeginImageContext(backView.bounds.size);
+    [backView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image= UIGraphicsGetImageFromCurrentImageContext();
     
-    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return image;
 }
-- (UIImage *)getImageWithString:(NSString *)string
-                           font:(UIFont *)font
-                      textColor:(UIColor *)color
-                backgroundColor:(UIColor *)backgroundColor
-                           size:(CGSize)size {
++ (UIImage *_Nullable)getImageWithString:(NSString *_Nullable)string
+                                    font:(UIFont *_Nullable)font
+                               textColor:(UIColor *_Nullable)color
+                         backgroundColor:(UIColor *_Nullable)backgroundColor
+                                    size:(CGSize)size {
 
     NSMutableAttributedString *attributedText = [[NSMutableAttributedString alloc] initWithString:string];
     
@@ -128,7 +128,7 @@
     
     return [self getImageWithAttributedString:attributedText backgroundColor:backgroundColor size:size];
 }
-- (UIImage *)getImageWithAttributedString:(NSMutableAttributedString *)attributedString
++ (UIImage *)getImageWithAttributedString:(NSMutableAttributedString *)attributedString
                           backgroundColor:(UIColor *)backgroundColor
                                      size:(CGSize)size {
     
@@ -279,6 +279,66 @@
         return [UIImage imageNamed:name];
     }
 }
+- (UIImage *)thumbnailWithSize:(CGSize)size {
+    
+    CGSize originalsize = [self size];
+    //原图长宽均小于标准长宽的，不作处理返回原图
+    if (originalsize.width<size.width && originalsize.height<size.height) {
+        return self;
+    }
+    //原图长宽均大于标准长宽的，按比例缩小至最大适应值
+    else if(originalsize.width>size.width && originalsize.height>size.height) {
+        CGFloat rate = 1.0;
+        CGFloat widthRate = originalsize.width/size.width;
+        CGFloat heightRate = originalsize.height/size.height;
+        
+        rate = widthRate>heightRate?heightRate:widthRate;
+        
+        CGImageRef imageRef = nil;
+        
+        if (heightRate>widthRate) {
+            imageRef = CGImageCreateWithImageInRect([self CGImage], CGRectMake(0, originalsize.height/2-size.height*rate/2, originalsize.width, size.height*rate));//获取图片整体部分
+        }
+        else {
+            imageRef = CGImageCreateWithImageInRect([self CGImage], CGRectMake(originalsize.width/2-size.width*rate/2, 0, size.width*rate, originalsize.height));//获取图片整体部分
+        }
+        
+        UIGraphicsBeginImageContext(size);//指定要绘画图片的大小
+        CGContextRef con = UIGraphicsGetCurrentContext();
+        CGContextTranslateCTM(con, 0.0, size.height);
+        CGContextScaleCTM(con, 1.0, -1.0);
+        CGContextDrawImage(con, CGRectMake(0, 0, size.width, size.height), imageRef);
+        UIImage *standardImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        CGImageRelease(imageRef);
+        return standardImage;
+    }
+    //原图长宽有一项大于标准长宽的，对大于标准的那一项进行裁剪，另一项保持不变
+    else if(originalsize.height>size.height || originalsize.width>size.width){
+        CGImageRef imageRef = nil;
+        if(originalsize.height>size.height) {
+            imageRef = CGImageCreateWithImageInRect([self CGImage], CGRectMake(0, originalsize.height/2-size.height/2, originalsize.width, size.height));//获取图片整体部分
+        }
+        else if (originalsize.width>size.width) {
+            imageRef = CGImageCreateWithImageInRect([self CGImage], CGRectMake(originalsize.width/2-size.width/2, 0, size.width, originalsize.height));//获取图片整体部分
+        }
+        UIGraphicsBeginImageContext(size);//指定要绘画图片的大小
+        CGContextRef con = UIGraphicsGetCurrentContext();
+        CGContextTranslateCTM(con, 0.0, size.height);
+        CGContextScaleCTM(con, 1.0, -1.0);
+        CGContextDrawImage(con, CGRectMake(0, 0, size.width, size.height), imageRef);
+        UIImage *standardImage = UIGraphicsGetImageFromCurrentImageContext();
+        NSLog(@"改变后图片的宽度为%f,图片的高度为%f",[standardImage size].width,[standardImage size].height);
+        UIGraphicsEndImageContext();
+        CGImageRelease(imageRef);
+        return standardImage;
+    }
+    //原图为标准长宽的，不做处理
+    else {
+        return self;
+    }
+}
+
 
 - (UIImage *)animatedImageByScalingAndCroppingToSize:(CGSize)size {
     if (CGSizeEqualToSize(self.size, size) || CGSizeEqualToSize(size, CGSizeZero)) {

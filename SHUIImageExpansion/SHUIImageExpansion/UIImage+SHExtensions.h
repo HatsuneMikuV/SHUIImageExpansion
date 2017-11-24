@@ -10,6 +10,8 @@
 
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
+#import <UIKit/UIKitDefines.h>
+
 
 #define SCREENWIDTH  ([UIScreen mainScreen].bounds.size.width)
 #define SCREENHEIGHT ([UIScreen mainScreen].bounds.size.height)
@@ -34,7 +36,7 @@
  @param size 新尺寸
  @return 新图片
  */
-- (UIImage *_Nullable)animatedImageByScalingAndCroppingToSize:(CGSize)size;
+- (UIImage *_Nullable)thumbnailWithSize:(CGSize)size;
 #pragma mark -
 #pragma mark   ==============Color==============
 /**
@@ -62,12 +64,10 @@
  根据原有图片(不足屏宽)
  绘制一个全屏宽，图等高两侧自定义背景色的图片
 
- @param oldImage 原图
  @param color 背景色（默认白色）
  @return 新图
  */
-- (UIImage *_Nullable)snapshotScreenInView:(UIImage *_Nullable)oldImage
-                  backgroundColor:(UIColor *_Nullable)color;
+- (UIImage *_Nullable)snapshotScreenBackgroundColor:(UIColor *_Nullable)color;
 #pragma mark -
 #pragma mark   ==============String==============
 /**
@@ -80,7 +80,7 @@
  @param size 图片尺寸
  @return 图片
  */
-- (UIImage *_Nullable)getImageWithString:(NSString *_Nullable)string
++ (UIImage *_Nullable)getImageWithString:(NSString *_Nullable)string
                            font:(UIFont *_Nullable)font
                       textColor:(UIColor *_Nullable)color
                 backgroundColor:(UIColor *_Nullable)backgroundColor
@@ -94,7 +94,7 @@
  @param size 尺寸
  @return 图片
  */
-- (UIImage *_Nullable)getImageWithAttributedString:(NSMutableAttributedString *_Nullable)attributedString
++ (UIImage *_Nullable)getImageWithAttributedString:(NSMutableAttributedString *_Nullable)attributedString
                           backgroundColor:(UIColor *_Nullable)backgroundColor
                                      size:(CGSize)size;
 #pragma mark -
@@ -115,5 +115,13 @@
  @return 图片
  */
 + (UIImage *_Nullable)animatedGIFWithData:(NSData *_Nullable)data;
+
+/**
+ gif图
+
+ @param size 变化尺寸
+ @return 新图
+ */
+- (UIImage *_Nullable)animatedImageByScalingAndCroppingToSize:(CGSize)size;
 
 @end

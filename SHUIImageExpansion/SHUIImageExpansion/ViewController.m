@@ -8,7 +8,6 @@
 
 #import "ViewController.h"
 #import "SHImageViewController.h"
-#import "UIImage+SHExtensions.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -31,13 +30,42 @@
     [self.view addSubview:self.tableView];
     
 }
+- (SHImageBitmapType)matchIndexPath:(NSIndexPath *)indePath {
+    if (indePath.section == 0) {
+        if (indePath.row == 0) {
+            return SHImageBitmapTypeRadius;
+        }
+        return SHImageBitmapTypeSize;
+    }else if (indePath.section == 1) {
+        return SHImageBitmapTypeColor;
+    }else if (indePath.section == 2) {
+        if (indePath.row == 0) {
+            return SHImageBitmapTypeWaterImage;
+        }
+        return SHImageBitmapTypeScreenImage;
+    }else if (indePath.section == 3) {
+        if (indePath.row == 0) {
+            return SHImageBitmapTypeStringImage;
+        }
+        return SHImageBitmapTypeAttributedStringImage;
+    }else if (indePath.section == 4) {
+        if (indePath.row == 0) {
+            return SHImageBitmapTypeSourceData;
+        }else if (indePath.row == 1){
+            return SHImageBitmapTypeSourceName;
+        }
+        return SHImageBitmapTypeSourceSize;
+    }
+    return SHImageBitmapTypeNone;
+}
 #pragma mark -
 #pragma mark   ==============UITableViewDelegate==============
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if (indexPath.section < [self.keys count] && indexPath.row < [self.dataDict[self.keys[indexPath.section]] count]) {
         SHImageViewController *controller = [[SHImageViewController alloc] init];
-        controller.bitmapType = indexPath.section + indexPath.row;
+        controller.bitmapType = [self matchIndexPath:indexPath];
+        controller.navigationItem.title = [NSString stringWithFormat:@"%@",self.dataDict[self.keys[indexPath.section]][indexPath.row]];
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
@@ -78,7 +106,7 @@
                       @"Color":@[@"绘制一个颜色图片"],
                       @"Image":@[@"添加水印",@"根据原图绘制一个全屏宽"],
                       @"String":@[@"字符串绘制一张图片",@"富文本字符串绘制一张图片"],
-                      @"animatedGIF":@[@"二进制流gif图",@"本地gif图绘制"]}.mutableCopy;
+                      @"animatedGIF":@[@"二进制流gif图",@"本地gif图绘制",@"gif图更改尺寸"]}.mutableCopy;
     }
     return _dataDict;
 }

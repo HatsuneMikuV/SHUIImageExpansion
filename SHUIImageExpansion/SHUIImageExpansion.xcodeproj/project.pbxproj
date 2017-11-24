@@ -15,6 +15,11 @@
 		7C94771C1FC7BDBE005A6A22 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C94771B1FC7BDBE005A6A22 /* main.m */; };
 		7C9477251FC7C215005A6A22 /* UIImage+SHExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9477241FC7C215005A6A22 /* UIImage+SHExtensions.m */; };
 		7C9477281FC7D1C1005A6A22 /* SHImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7C9477271FC7D1C1005A6A22 /* SHImageViewController.m */; };
+		7C94772B1FC7FC63005A6A22 /* 3.gif in Resources */ = {isa = PBXBuildFile; fileRef = 7C94772A1FC7FC63005A6A22 /* 3.gif */; };
+		7C94772F1FC7FD45005A6A22 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C94772E1FC7FD45005A6A22 /* 1.png */; };
+		7C9477391FC80BEE005A6A22 /* 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C9477381FC80BEE005A6A22 /* 2.png */; };
+		7C94773B1FC80BF3005A6A22 /* 4.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C94773A1FC80BF3005A6A22 /* 4.png */; };
+		7C94773D1FC80EE1005A6A22 /* 5.png in Resources */ = {isa = PBXBuildFile; fileRef = 7C94773C1FC80EE1005A6A22 /* 5.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +37,11 @@
 		7C9477241FC7C215005A6A22 /* UIImage+SHExtensions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SHExtensions.m"; sourceTree = "<group>"; };
 		7C9477261FC7D1C1005A6A22 /* SHImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SHImageViewController.h; sourceTree = "<group>"; };
 		7C9477271FC7D1C1005A6A22 /* SHImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SHImageViewController.m; sourceTree = "<group>"; };
+		7C94772A1FC7FC63005A6A22 /* 3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = 3.gif; sourceTree = "<group>"; };
+		7C94772E1FC7FD45005A6A22 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
+		7C9477381FC80BEE005A6A22 /* 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 2.png; sourceTree = "<group>"; };
+		7C94773A1FC80BF3005A6A22 /* 4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 4.png; sourceTree = "<group>"; };
+		7C94773C1FC80EE1005A6A22 /* 5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 5.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +82,7 @@
 				7C9477271FC7D1C1005A6A22 /* SHImageViewController.m */,
 				7C9477231FC7C215005A6A22 /* UIImage+SHExtensions.h */,
 				7C9477241FC7C215005A6A22 /* UIImage+SHExtensions.m */,
+				7C9477291FC7FC54005A6A22 /* New Group */,
 				7C9477121FC7BDBE005A6A22 /* Main.storyboard */,
 				7C9477151FC7BDBE005A6A22 /* Assets.xcassets */,
 				7C9477171FC7BDBE005A6A22 /* LaunchScreen.storyboard */,
@@ -79,6 +90,18 @@
 				7C94771B1FC7BDBE005A6A22 /* main.m */,
 			);
 			path = SHUIImageExpansion;
+			sourceTree = "<group>";
+		};
+		7C9477291FC7FC54005A6A22 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				7C94772E1FC7FD45005A6A22 /* 1.png */,
+				7C9477381FC80BEE005A6A22 /* 2.png */,
+				7C94772A1FC7FC63005A6A22 /* 3.gif */,
+				7C94773A1FC80BF3005A6A22 /* 4.png */,
+				7C94773C1FC80EE1005A6A22 /* 5.png */,
+			);
+			path = "New Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,7 +162,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7C9477391FC80BEE005A6A22 /* 2.png in Resources */,
+				7C94773B1FC80BF3005A6A22 /* 4.png in Resources */,
+				7C94772F1FC7FD45005A6A22 /* 1.png in Resources */,
 				7C9477191FC7BDBE005A6A22 /* LaunchScreen.storyboard in Resources */,
+				7C94772B1FC7FC63005A6A22 /* 3.gif in Resources */,
+				7C94773D1FC80EE1005A6A22 /* 5.png in Resources */,
 				7C9477161FC7BDBE005A6A22 /* Assets.xcassets in Resources */,
 				7C9477141FC7BDBE005A6A22 /* Main.storyboard in Resources */,
 			);
