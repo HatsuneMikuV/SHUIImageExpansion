@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "SHImageViewController.h"
-#import "SHImageViewController.h"
+#import "UIImage+SHExtensions.h"
 
 @interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
 
@@ -41,6 +41,18 @@
         [self.navigationController pushViewController:controller animated:YES];
     }
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    return 30.f;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
+    return CGFLOAT_MIN;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, SCREENWIDTH, 30.f)];
+    label.text = [NSString stringWithFormat:@"  %@",self.keys[section]];
+    label.font = [UIFont boldSystemFontOfSize:17];
+    return label;
+}
 #pragma mark -
 #pragma mark   ==============UITableViewDataSource==============
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -53,6 +65,8 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     if (indexPath.section < [self.dataDict.allKeys count] && indexPath.row < [self.dataDict[self.keys[indexPath.section]] count]) {
         cell.textLabel.text = [NSString stringWithFormat:@"%@",self.dataDict[self.keys[indexPath.section]][indexPath.row]];
+        cell.textLabel.font = [UIFont systemFontOfSize:15];
+        cell.textLabel.textColor = [UIColor grayColor];
     }
     return cell;
 }
@@ -70,7 +84,7 @@
 }
 - (NSMutableArray *)keys {
     if (_keys == nil) {
-        _keys = self.dataDict.allKeys.mutableCopy;
+        _keys = @[@"Size",@"Color",@"Image",@"String",@"animatedGIF"].mutableCopy;
     }
     return _keys;
 }
@@ -80,6 +94,11 @@
         _tableView.dataSource = self;
         _tableView.delegate = self;
         [_tableView registerClass:UITableViewCell.class forCellReuseIdentifier:@"cell"];
+        if (@available(iOS 11.0, *)) {
+            _tableView.estimatedSectionFooterHeight = 0;
+            _tableView.estimatedSectionHeaderHeight = 0;
+            _tableView.estimatedRowHeight = 0;
+        }
     }
     return _tableView;
 }

@@ -17,7 +17,79 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
+    
+
+    [self getSwitchType:self.bitmapType];
 }
+
+- (void)getSwitchType:(SHImageBitmapType)type {
+    
+    switch (type) {
+        
+        case SHImageBitmapTypeNone:
+            
+            break;
+        case SHImageBitmapTypeRadius:
+            [self SHImageRadius];
+            break;
+        case SHImageBitmapTypeSize:
+            [self SHImageSize];
+            break;
+        case SHImageBitmapTypeColor:
+            [self SHImageColor];
+            break;
+        case SHImageBitmapTypeScreenImage:
+            [self SHImageScreenImage];
+            break;
+        case SHImageBitmapTypeWaterImage:
+            [self SHImageWaterImage];
+            break;
+        case SHImageBitmapTypeStringImage:
+            [self SHImageStringImage];
+            break;
+        case SHImageBitmapTypeAttributedStringImage:
+            [self SHImageAttributedStringImage];
+            break;
+        case SHImageBitmapTypeSourceName:
+            [self SHImageSourceName];
+            break;
+        case SHImageBitmapTypeSourceData:
+            [self SHImageSourceData];
+            break;
+            
+        default:
+            break;
+    }
+}
+- (void)SHImageRadius {
+    
+}
+- (void)SHImageSize {
+    
+}
+- (void)SHImageColor {
+    
+}
+- (void)SHImageScreenImage {
+    
+}
+- (void)SHImageWaterImage {
+    
+}
+- (void)SHImageStringImage {
+    
+}
+- (void)SHImageAttributedStringImage {
+    
+}
+- (void)SHImageSourceName {
+    
+}
+- (void)SHImageSourceData {
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
