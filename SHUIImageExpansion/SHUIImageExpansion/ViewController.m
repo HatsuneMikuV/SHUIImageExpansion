@@ -55,6 +55,8 @@
             return SHImageBitmapTypeSourceName;
         }
         return SHImageBitmapTypeSourceSize;
+    }else if (indePath.section == 5) {
+        return SHImageBitmapTypeDrawArc;
     }
     return SHImageBitmapTypeNone;
 }
@@ -106,13 +108,14 @@
                       @"Color":@[@"绘制一个颜色图片"],
                       @"Image":@[@"添加水印",@"根据原图绘制一个全屏宽"],
                       @"String":@[@"字符串绘制一张图片",@"富文本字符串绘制一张图片"],
-                      @"animatedGIF":@[@"二进制流gif图",@"本地gif图绘制",@"gif图更改尺寸"]}.mutableCopy;
+                      @"AnimatedGIF":@[@"二进制流gif图",@"本地gif图绘制",@"gif图更改尺寸"],
+                      @"DrawArc":@[@"绘制大转盘扇形"]}.mutableCopy;
     }
     return _dataDict;
 }
 - (NSMutableArray *)keys {
     if (_keys == nil) {
-        _keys = @[@"Size",@"Color",@"Image",@"String",@"animatedGIF"].mutableCopy;
+        _keys = @[@"Size",@"Color",@"Image",@"String",@"AnimatedGIF",@"DrawArc"].mutableCopy;
     }
     return _keys;
 }

@@ -22,6 +22,7 @@ typedef enum : NSUInteger {
     SHImageBitmapTypeSourceName,
     SHImageBitmapTypeSourceData,
     SHImageBitmapTypeSourceSize,
+    SHImageBitmapTypeDrawArc,
 } SHImageBitmapType;
 
 @interface SHImageViewController : UIViewController

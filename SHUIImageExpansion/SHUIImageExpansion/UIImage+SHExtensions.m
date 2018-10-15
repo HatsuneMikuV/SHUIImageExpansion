@@ -377,4 +377,90 @@
     return [UIImage animatedImageWithImages:scaledImages duration:self.duration];
 }
 
++ (UIImage *)drawArcImageSize:(CGSize)size
+                       colors:(NSArray<UIColor *> *)colors
+                       values:(NSArray<NSNumber *> *)values
+                  strokeColor:(UIColor *)strokeColor
+                  strokeWidth:(CGFloat)strokeWidth
+{
+    if (size.width == 0 || size.height == 0) {
+        return nil;
+    }
+    
+    if (colors.count <= 1 || values.count <= 1 || colors.count != values.count) {
+        return nil;
+    }
+
+    
+    NSInteger count = colors.count;
+    float total = 0;
+    for (NSNumber *num in values) {
+        total += [num floatValue];
+    }
+    float angle = M_PI * 2 / total;
+    float angle_start = 0;
+    float angle_end = 0;
+    
+    CGPoint center = CGPointMake(size.width * 0.5, size.width * 0.5);
+    
+    NSMutableArray *colorArr = [NSMutableArray array];
+    if (colors.count < 3) {
+        [colorArr addObjectsFromArray:colors];
+    }else {
+        [colorArr addObjectsFromArray:[colors subarrayWithRange:NSMakeRange(3, count - 3)]];
+        [colorArr addObjectsFromArray:[colors subarrayWithRange:NSMakeRange(0, 3)]];
+    }
+
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    CGFloat radius = size.width * 0.5;
+    //绘制开始
+    UIGraphicsBeginImageContextWithOptions(rect.size, NO, 0);
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextClearRect(ctx, rect);
+    for (NSInteger index = 0; index < count; index++) {
+        NSNumber *num = values[index];
+        
+        angle_start = angle_end;
+        angle_end = angle_start + [num floatValue] * angle;
+        
+        UIColor *color = colorArr[index];
+        //设置填充颜色
+        CGContextSetFillColorWithColor(ctx, color.CGColor);
+        //移动画笔
+        CGContextMoveToPoint(ctx, center.x, center.y);
+        //画扇形
+        CGContextAddArc(ctx, center.x, center.y, radius,  angle_start, angle_end, 0);
+        //填充
+        CGContextFillPath(ctx);
+        
+        //画中间的分割线
+        CGContextSetStrokeColorWithColor(ctx, strokeColor.CGColor);
+        //设置线条宽度
+        CGContextSetLineWidth(ctx, strokeWidth);
+        CGContextMoveToPoint(ctx, center.x, center.y);
+        //算出线另一端的坐标
+        CGPoint point1 = CGPointMake(center.x + radius*cos(angle_start), center.y + radius*sin(angle_start));
+        //画线
+        CGContextAddLineToPoint(ctx, point1.x, point1.y);
+        CGContextStrokePath(ctx);
+        
+        //最后一次绘制结束分割线 防止扇形盖住线宽
+        if (index == count - 1) {
+            //画中间的分割线
+            CGContextSetStrokeColorWithColor(ctx, strokeColor.CGColor);
+            //设置线条宽度
+            CGContextSetLineWidth(ctx, strokeWidth);
+            CGContextMoveToPoint(ctx, center.x, center.y);
+            //算出线另一端的坐标
+            CGPoint point1 = CGPointMake(center.x + radius*cos(angle_end), center.y + radius*sin(angle_end));
+            //画线
+            CGContextAddLineToPoint(ctx, point1.x, point1.y);
+            CGContextStrokePath(ctx);
+        }
+    }
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
+}
+
 @end

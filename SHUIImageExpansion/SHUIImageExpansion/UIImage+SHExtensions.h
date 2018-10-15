@@ -124,4 +124,23 @@
  */
 - (UIImage *_Nullable)animatedImageByScalingAndCroppingToSize:(CGSize)size;
 
+#pragma mark -
+#pragma mark   ==============扇形（大转盘）==============
+
+
+/**
+ 绘制一个扇形（大转盘）
+
+ @param size 图片尺寸，with = height
+ @param colors 一组颜色
+ @param values 一组比例 10 = [2, 2, 2, 2, 2]
+ @param strokeColor 分割线颜色
+ @param strokeWidth 分割线粗细
+ @return 一张图
+ */
++ (UIImage *_Nullable)drawArcImageSize:(CGSize)size
+                                colors:(NSArray<UIColor *> *)colors
+                                values:(NSArray<NSNumber *> *)values
+                           strokeColor:(UIColor *)strokeColor
+                           strokeWidth:(CGFloat)strokeWidth;
 @end

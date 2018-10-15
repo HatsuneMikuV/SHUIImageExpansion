@@ -59,7 +59,9 @@
         case SHImageBitmapTypeSourceSize:
             [self SHImageSourceImageSize];
             break;
-            
+        case SHImageBitmapTypeDrawArc:
+            [self SHImageSourceImageDrawArc];
+            break;
         default:
             break;
     }
@@ -164,6 +166,43 @@
     [imageView setImage:[[UIImage animatedGIFNamed:@"3"] animatedImageByScalingAndCroppingToSize:CGSizeMake(200, 60)]];
     
     [self.view addSubview:imageView];
+}
+
+- (void)SHImageSourceImageDrawArc {
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(100, 100, 150, 150)];
+    imageView.backgroundColor = [UIColor whiteColor];
+    imageView.clipsToBounds = YES;
+    imageView.layer.cornerRadius = 75;
+    imageView.layer.borderWidth = 1;
+    imageView.layer.borderColor = UIColor.redColor.CGColor;
+    [imageView setContentMode:(UIViewContentModeCenter)];
+    UIImage *image = [UIImage drawArcImageSize:CGSizeMake(150, 150)
+                                        colors:@[UIColor.cyanColor,
+                                                 UIColor.orangeColor,
+                                                 UIColor.greenColor,
+                                                 UIColor.orangeColor,
+                                                 UIColor.cyanColor,
+                                                 UIColor.orangeColor,
+                                                 UIColor.cyanColor,
+                                                 UIColor.orangeColor,
+                                                 UIColor.cyanColor,
+                                                 UIColor.orangeColor]
+                                        values:@[@(1), @(1), @(1), @(1), @(1), @(1), @(1), @(1), @(1), @(1)]
+                                   strokeColor:UIColor.redColor
+                                   strokeWidth:1];
+    [imageView setImage:image];
+    [self.view addSubview:imageView];
+    
+    CABasicAnimation* rotationAnimation;
+    rotationAnimation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    rotationAnimation.toValue = [NSNumber numberWithFloat:(360 * M_PI / 180.0 * 5)];
+    rotationAnimation.duration = 3.f;
+    rotationAnimation.cumulative = YES;
+    //由慢->快->慢
+    rotationAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    rotationAnimation.fillMode = kCAFillModeForwards;
+    rotationAnimation.removedOnCompletion = NO;
+    [imageView.layer addAnimation:rotationAnimation forKey:@"rotationAnimation"];
 }
 
 
